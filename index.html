@@ -2,28 +2,56 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Library Management Demo</title>
+  <title>My Library Demo</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Library Management System (Demo)</h1>
+  <header>
+    <h1>Library Management System</h1>
+    <nav>
+      <a href="#">Home</a>
+      <a href="#">Books</a>
+      <a href="#">Members</a>
+    </nav>
+  </header>
 
-  <div>
-    <input id="bookTitle" placeholder="Book Title">
-    <input id="bookAuthor" placeholder="Author">
-    <button onclick="addBook()">Add Book</button>
-  </div>
+  <main>
+    <section class="add-section">
+      <h2>Add a Book</h2>
+      <input id="bookTitle" placeholder="Book Title">
+      <input id="bookAuthor" placeholder="Author">
+      <input id="bookPrice" placeholder="Price (₹)">
+      <select id="bookCategory">
+        <option value="Fiction">Fiction</option>
+        <option value="Non-Fiction">Non-Fiction</option>
+        <option value="Tech">Tech</option>
+        <option value="Business">Business</option>
+      </select>
+      <button onclick="addBook()">Add Book</button>
+    </section>
 
-  <div>
-    <input id="memberName" placeholder="Member Name">
-    <button onclick="addMember()">Add Member</button>
-  </div>
+    <section class="add-section">
+      <h2>Add a Member</h2>
+      <input id="memberName" placeholder="Member Name">
+      <input id="memberEmail" placeholder="Email">
+      <button onclick="addMember()">Add Member</button>
+    </section>
 
-  <h2>Books</h2>
-  <ul id="books"></ul>
+    <section>
+      <h2>Books</h2>
+      <input id="searchBar" placeholder="Search books..." oninput="searchBooks()">
+      <div id="books" class="grid"></div>
+    </section>
 
-  <h2>Members</h2>
-  <ul id="members"></ul>
+    <section>
+      <h2>Members</h2>
+      <div id="members"></div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Demo project by Gyanankur Baruah — powered by Open Library API</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>

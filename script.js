@@ -4,15 +4,21 @@ let members = [];
 function addBook() {
   const title = document.getElementById("bookTitle").value;
   const author = document.getElementById("bookAuthor").value;
+  const price = document.getElementById("bookPrice").value;
+  const category = document.getElementById("bookCategory").value;
   const id = "BK-" + (books.length + 1);
-  books.push({ id, title, author, borrowed: false });
+
+  const book = { id, title, author, price, category, borrowed: false, cover: null };
+  books.push(book);
+  fetchCover(book);
   renderBooks();
 }
 
 function addMember() {
   const name = document.getElementById("memberName").value;
+  const email = document.getElementById("memberEmail").value;
   const id = "MB-" + (members.length + 1);
-  members.push({ id, name });
+  members.push({ id, name, email });
   renderMembers();
 }
 
@@ -32,33 +38,51 @@ function returnBook(id) {
   }
 }
 
-function renderBooks() {
-  const list = document.getElementById("books");
-  list.innerHTML = "";
-  books.forEach(b => {
-    const li = document.createElement("li");
-    li.textContent = `[${b.id}] ${b.title} by ${b.author} — ${b.borrowed ? "Borrowed" : "Available"}`;
-    if (!b.borrowed) {
-      const btn = document.createElement("button");
-      btn.textContent = "Borrow";
-      btn.onclick = () => borrowBook(b.id);
-      li.appendChild(btn);
-    } else {
-      const btn = document.createElement("button");
-      btn.textContent = "Return";
-      btn.onclick = () => returnBook(b.id);
-      li.appendChild(btn);
-    }
-    list.appendChild(li);
+function searchBooks() {
+  const keyword = document.getElementById("searchBar").value.toLowerCase();
+  const filtered = books.filter(b => b.title.toLowerCase().includes(keyword) || b.author.toLowerCase().includes(keyword));
+  renderBooks(filtered);
+}
+
+function renderBooks(list = books) {
+  const container = document.getElementById("books");
+  container.innerHTML = "";
+  list.forEach(b => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${b.cover || 'https://via.placeholder.com/150'}" alt="Book cover">
+      <h3>${b.title}</h3>
+      <p>by ${b.author}</p>
+      <p>₹${b.price} | ${b.category}</p>
+      <p>Status: ${b.borrowed ? "Borrowed" : "Available"}</p>
+      <button onclick="${b.borrowed ? `returnBook('${b.id}')` : `borrowBook('${b.id}')`}">
+        ${b.borrowed ? "Return" : "Borrow"}
+      </button>
+    `;
+    container.appendChild(card);
   });
 }
 
 function renderMembers() {
-  const list = document.getElementById("members");
-  list.innerHTML = "";
+  const container = document.getElementById("members");
+  container.innerHTML = "";
   members.forEach(m => {
-    const li = document.createElement("li");
-    li.textContent = `[${m.id}] ${m.name}`;
-    list.appendChild(li);
+    const div = document.createElement("div");
+    div.textContent = `[${m.id}] ${m.name} (${m.email})`;
+    container.appendChild(div);
   });
+}
+
+// Fetch book cover from Open Library API
+function fetchCover(book) {
+  const query = encodeURIComponent(book.title);
+  fetch(`https://openlibrary.org/search.json?title=${query}`)
+    .then(res => res.json())
+    .then(data => {
+      if (data.docs && data.docs.length > 0 && data.docs[0].cover_i) {
+        book.cover = `https://covers.openlibrary.org/b/id/${data.docs[0].cover_i}-L.jpg`;
+        renderBooks();
+      }
+    });
 }

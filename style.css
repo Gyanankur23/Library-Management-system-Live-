@@ -13,3 +13,18 @@ button:hover { background:#2980b9; }
 .dropdown { background:white; border:1px solid #ccc; max-width:300px; position:absolute; z-index:10; }
 .dropdown div { padding:8px; cursor:pointer; }
 .dropdown div:hover { background:#eee; }
+
+.dropdown {
+  background: white;
+  border: 1px solid #ccc;
+  max-width: 300px;
+  position: absolute;
+  z-index: 10;
+}
+.dropdown div {
+  padding: 8px;
+  cursor: pointer;
+}
+.dropdown div:hover {
+  background: #eee;
+}

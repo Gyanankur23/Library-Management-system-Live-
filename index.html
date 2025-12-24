@@ -38,8 +38,13 @@
     </section>
 
     <section>
+      <h2>Search Books</h2>
+      <input id="searchBar" placeholder="Search books..." oninput="showSuggestions()">
+      <div id="suggestions" class="dropdown"></div>
+    </section>
+
+    <section>
       <h2>Books</h2>
-      <input id="searchBar" placeholder="Search books..." oninput="searchBooks()">
       <div id="books" class="grid"></div>
     </section>
 
